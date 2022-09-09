@@ -1,69 +1,94 @@
-// // TODO: Include packages needed for this application
-// const generateMarkdown = require("./utils/generateMarkdown");
-// // TODO: Create an array of questions for user input
-// const questions = [];
+const inquirer = require("inquirer");
+const fs = require("fs");
 
-// // TODO: Create a function to write README file
-// function writeToFile(fileName, data) {}
+const questions = [
+  {
+    message: "What is the Title of your project?",
+    type: "input",
+    name: "title",
+  },
+  {
+    message: "What is the description of your project?",
+    type: "input",
+    name: "description",
+  },
+  {
+    message: "What is the table of contents of your project?",
+    type: "input",
+    name: "table_of_contents",
+  },
+  {
+    message: "What were the installations for your project?",
+    type: "input",
+    name: "installation",
+  },
+  {
+    message: "What is the usage of your project?",
+    type: "input",
+    name: "usage",
+  },
+  {
+    message: "What is the license of your project?",
+    type: "list",
+    choices: ["MIT", "APACHE 2.0", "None"],
+    name: "license",
+  },
+  {
+    message: "What are the contributing guidelines for your project?",
+    type: "input",
+    name: "contributing",
+  },
+  {
+    message: "What is the testing guidelines for your project?",
+    type: "input",
+    name: "tests",
+  },
+  {
+    message: "What is the github username for your project?",
+    type: "input",
+    name: "username",
+  },
+  {
+    message: "What is your email?",
+    type: "input",
+    name: "email",
+  },
+];
 
-// // TODO: Create a function to initialize app
-// function init() {}
-
-// // Function call to initialize app
-// init();
-
-// generateMarkdown("Test");
-
-//const inquirer = require('inquirer');
-import inquirer from "inquirer";
-
-/*
-// TODO: Create a function that returns a license badge based on which license is passed in
-// If there is no license, return an empty string
-function renderLicenseBadge(license) {}
-
-// TODO: Create a function that returns the license link
-// If there is no license, return an empty string
-function renderLicenseLink(license) {}
-
-// TODO: Create a function that returns the license section of README
-// If there is no license, return an empty string
-function renderLicenseSection(license) {}
-
-// TODO: Create a function to generate markdown for README
-function generateMarkdown(data) {
-  //return `# ${data.title}`;
-  */
 inquirer
-  .prompt([
-    {
-      type: "input",
-      name: "title",
-      message: "What is the title of your project?",
-      choices: [
-        "Order a pizza",
-        "Make a reservation",
-        new inquirer.Separator(),
-        "What is the purpose of your project?",
-        {
-          name: "Contact support",
-          disabled: "Unavailable at this time",
-        },
-        "Talk to the receptionist",
-      ],
-    },
-    {
-      type: "list",
-      name: "size",
-      message: "What size do you need?",
-      choices: ["Jumbo", "Large", "Standard", "Medium", "Small", "Micro"],
-      filter(val) {
-        return val.toLowerCase();
-      },
-    },
-  ])
+  .createPromptModule(questions)
   .then((answers) => {
-    console.log(JSON.stringify(answers, null, "  "));
-  });
+    console.log(answers);
+    let readMeElem = `
+    <img src='https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT'>
+<h1> Title </h1>
+<h2> Description </h2>
+<details open ="open">
+<summary> Table of Contents</summary>
+<ol>
+<li><a href="#installation">Installation</a></li>
+<li><a href= "#usage">Usage </a></li>
+<li><a href= "#contributing">Contributing </a></li>
+<li><a href= "#tests">Tests </a></li>
+<li><a href= "#questions">Questions </a></li>
+</datails>
 
-//module.exports = generateMarkdown;
+<h3 id='installation'>Installation</h3>
+<p>installation</p>
+
+<h3 id='usage'>Usage</h3>
+<p>usage</p>
+
+<h3 id='contributing'>Contributing</h3>
+<p>contributing</p>
+
+<h3 id='tests'>Tests</h3>
+<p>tests</p>
+
+<h3 id='questions'>Questions</h3>
+<p>questions</p>
+
+    `;
+    fs.writeFile("newReadMe.md", readMeElem, (err) => console.log(err));
+  })
+  .catch((err) => console.log(err));
