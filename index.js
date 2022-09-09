@@ -60,9 +60,9 @@ inquirer
   .then((answers) => {
     console.log(answers);
     let readMeElem = `
-    <img src='https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT'>
-<h1> Title </h1>
-<h2> Description </h2>
+    <img src='https://img.shields.io/badge/license-${answers.license}-yellow.svg)](https://opensource.org/licenses/MIT'>
+<h1> ${answers.title} </h1>
+<h2> ${answers.description} </h2>
 <details open ="open">
 <summary> Table of Contents</summary>
 <ol>
@@ -74,19 +74,19 @@ inquirer
 </datails>
 
 <h3 id='installation'>Installation</h3>
-<p>installation</p>
+<p>${answers.installation} </p>
 
 <h3 id='usage'>Usage</h3>
-<p>usage</p>
+<p>${answers.usage} </p>
 
 <h3 id='contributing'>Contributing</h3>
-<p>contributing</p>
+<p>${answers.contributing} </p>
 
 <h3 id='tests'>Tests</h3>
-<p>tests</p>
+<p>${answers.tests} </p>
 
 <h3 id='questions'>Questions</h3>
-<p>questions</p>
+<p>Reach out with questions on github at ${answers.username} or email at ${answers.email}</p>
 
     `;
     fs.writeFile("newReadMe.md", readMeElem, (err) => console.log(err));
