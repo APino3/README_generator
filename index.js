@@ -1,6 +1,10 @@
-const inquirer = require("inquirer");
-const fs = require("fs");
-
+import inquirer from "inquirer";
+import fs from "fs";
+const badges = {
+  "APACHE 2.0":
+    "[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)",
+  MIT: "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)",
+};
 const questions = [
   {
     message: "What is the Title of your project?",
@@ -11,11 +15,6 @@ const questions = [
     message: "What is the description of your project?",
     type: "input",
     name: "description",
-  },
-  {
-    message: "What is the table of contents of your project?",
-    type: "input",
-    name: "table_of_contents",
   },
   {
     message: "What were the installations for your project?",
@@ -56,39 +55,56 @@ const questions = [
 ];
 
 inquirer
-  .createPromptModule(questions)
-  .then((answers) => {
-    console.log(answers);
-    let readMeElem = `
-    <img src='https://img.shields.io/badge/license-${answers.license}-yellow.svg)](https://opensource.org/licenses/MIT'>
-<h1> ${answers.title} </h1>
-<h2> ${answers.description} </h2>
-<details open ="open">
-<summary> Table of Contents</summary>
-<ol>
-<li><a href="#installation">Installation</a></li>
-<li><a href= "#usage">Usage </a></li>
-<li><a href= "#contributing">Contributing </a></li>
-<li><a href= "#tests">Tests </a></li>
-<li><a href= "#questions">Questions </a></li>
-</datails>
+  .createPromptModule()(questions)
+  .then(
+    ({
+      title,
+      description,
+      installation,
+      usage,
+      license,
+      contributing,
+      tests,
+      username,
+      email,
+    }) => {
+      let readMeElem = `${license == "None" ? "" : badges[license]}
+# ${title} 
 
-<h3 id='installation'>Installation</h3>
-<p>${answers.installation} </p>
+## Description
+### ${description}
 
-<h3 id='usage'>Usage</h3>
-<p>${answers.usage} </p>
+## Installation
+### ${installation}
 
-<h3 id='contributing'>Contributing</h3>
-<p>${answers.contributing} </p>
+## Usage
+### ${usage}
 
-<h3 id='tests'>Tests</h3>
-<p>${answers.tests} </p>
+## License
+### ${license}
 
-<h3 id='questions'>Questions</h3>
-<p>Reach out with questions on github at ${answers.username} or email at ${answers.email}</p>
+## Contributing
+### ${contributing}
+
+## Tests
+### ${tests}
+
+## Questions
+### [Github Profile](https://github.com/${username}) 
+### You can email me at: ${email} 
+
+# Table of Contents 
+1. [Title](#title)
+2. [Description](#description)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [License](#license)
+6. [Contributing](#contributing)
+7. [Tests](#tests)
+8. [Questions](#questions)
 
     `;
-    fs.writeFile("newReadMe.md", readMeElem, (err) => console.log(err));
-  })
+      fs.writeFile("README.md", readMeElem, (err) => console.log(err));
+    }
+  )
   .catch((err) => console.log(err));
